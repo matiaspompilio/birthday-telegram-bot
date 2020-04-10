@@ -9,7 +9,7 @@ const checkBirthdays = (func) => {
     const users = _.keys(birthdays[chatId]);
     users.map((userId) => {
       const user = birthdays[chatId][userId];
-      if ((moment().isSame(moment(user.birthday, 'DD-MM'), 'year')) && (moment().isSame(moment(user.birthday, 'DD-MM'), 'day'))) {
+      if ((moment().isSame(moment(user.birthday, 'DD-MM'), 'month')) && (moment().isSame(moment(user.birthday, 'DD-MM'), 'day'))) {
         console.log(user);
         func(chatId, user.name);
       }
@@ -21,15 +21,15 @@ const addBirthday = (chatId, userId, userName, day) => {
   birthdays[chatId]
     ? birthdays[chatId][userId] = {
       name: userName,
-      birthday: day
+      birthday: day,
     }
-    : birthdays[chatId] = { 
-        [userId]: {
-          name: userName,
-          birthday: day
-        }
-      };
-    console.log(birthdays);
+    : birthdays[chatId] = {
+      [userId]: {
+        name: userName,
+        birthday: day,
+      },
+    };
+  console.log(birthdays);
 };
 
 module.exports = {

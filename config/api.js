@@ -1,3 +1,3 @@
-const TOKEN = process.env.TOKEN;
+const { TOKEN } = process.env;
 
 module.exports = TOKEN;

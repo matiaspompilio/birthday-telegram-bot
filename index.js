@@ -1,17 +1,17 @@
 const TelegramBot = require('node-telegram-bot-api');
 const moment = require('moment-timezone');
+const cron = require('node-cron');
 const { addBirthday, checkBirthdays } = require('./src/calendar');
 const TOKEN = require('./config/api');
-var cron = require('node-cron');
 
 // Create a bot that uses 'polling' to fetch new updates
 const bot = new TelegramBot(TOKEN, { polling: true });
 
-cron.schedule('00 00 * * *', () => {
+cron.schedule('50 13 * * *', () => {
   checkBirthdays((chatId, name) => bot.sendMessage(chatId, `Es el cumpleaños de ${name}!`));
 }, {
   scheduled: true,
-  timezone: "America/Argentina/Buenos_Aires"
+  timezone: 'America/Argentina/Buenos_Aires',
 });
 
 // Matches "/birthday [whatever]"
@@ -30,8 +30,8 @@ bot.onText(/\/birthday (.+)/, (msg, match) => {
   } = msg;
 
   let resp;
-  
-  //using moment validation to parse the input 
+
+  // using moment validation to parse the input
   if (moment(match[1], 'DD-MM').isValid()) {
     resp = 'Se guardó tu cumpleaños';
     addBirthday(chatId, fromId, fromName, match[1]);
@@ -42,16 +42,16 @@ bot.onText(/\/birthday (.+)/, (msg, match) => {
   bot.sendMessage(chatId, resp);
 });
 
-bot.onText(/\/help/, (msg, match) => {
+bot.onText(/\/help/, (msg) => {
   const {
     chat: {
       id: chatId,
     },
   } = msg;
-  const resp = "Utilizando el comando /birthday y tu cumpleaños con el formato DD-MM. Te avisaré cuando sea tu cumpleaños ;)";
+  const resp = 'Utilizando el comando /birthday y tu cumpleaños con el formato DD-MM. Te avisaré cuando sea tu cumpleaños ;)';
 
   bot.sendMessage(chatId, resp);
 });
 // Listen for any kind of message. There are different kinds of
 // messages.
-bot.on("polling_error", (err) => console.log(err));
+bot.on('polling_error', (err) => console.log(err));
