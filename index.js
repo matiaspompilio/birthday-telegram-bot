@@ -2,10 +2,10 @@ const TelegramBot = require('node-telegram-bot-api');
 const moment = require('moment-timezone');
 const cron = require('node-cron');
 const { addBirthday, checkBirthdays } = require('./src/calendar');
-const TOKEN = require('./config/api');
+const { TOKEN, port, host} = require('./config/api');
 
 // Create a bot that uses 'polling' to fetch new updates
-const bot = new TelegramBot(TOKEN, { polling: true });
+const bot = new TelegramBot(TOKEN, {webHook: {port: port, host: host, polling: true}});
 
 cron.schedule('50 13 * * *', () => {
   checkBirthdays((chatId, name) => bot.sendMessage(chatId, `Es el cumpleaños de ${name}!`));
