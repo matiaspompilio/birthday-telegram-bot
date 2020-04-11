@@ -46,7 +46,7 @@ bot.onText(/\/help/, (msg) => {
       id: chatId,
     },
   } = msg;
-  const resp = 'Utiliza el comando /birthday y tu cumpleaños con el formato DD-MM. Te avisaré cuando sea tu cumpleaños ;)';
+  const resp = 'Utiliza el comando /birthday y tu cumpleaños con el formato DD-MM. Te avisaré cuando sea tu cumpleaños ;)\n Utiliza el comando /birthdays para consultar los cumpleaños del chat.';
 
   bot.sendMessage(chatId, resp);
 });

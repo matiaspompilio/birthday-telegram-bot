@@ -22,10 +22,9 @@ const getBirthdays = (chatId) => {
     let resp = '';
     const chatBirths = _.keys(birthdays[chatId]);
     chatBirths.map((userId) => resp = `${resp} \n
-      ${birthdays[chatId][userId].name} cumple el ${birthdays[chatId][userId].birthday}.`
-    )
+      ${birthdays[chatId][userId].name} cumple el ${birthdays[chatId][userId].birthday}.`);
     return resp;
-  } else return 'No hay cumpleaños agendados.\nAgrega el tuyo con el comando /birthday DD-MM.'
+  } return 'No hay cumpleaños agendados.\nAgrega el tuyo con el comando /birthday DD-MM.';
 };
 
 const addBirthday = (chatId, userId, userName, day) => {
