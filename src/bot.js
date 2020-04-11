@@ -51,16 +51,16 @@ bot.onText(/\/help/, (msg) => {
   bot.sendMessage(chatId, resp);
 });
 
-// bot.onText(/\/birthdays/, (msg) => {
-//   const {
-//     chat: {
-//       id: chatId,
-//     },
-//   } = msg;
-//   const resp = getBirthdays();
+bot.onText(/\/birthdays/, (msg) => {
+  const {
+    chat: {
+      id: chatId,
+    },
+  } = msg;
+  const resp = getBirthdays(chatId);
 
-//   bot.sendMessage(chatId, resp);
-// });
+  bot.sendMessage(chatId, resp);
+});
 
 // Listen for any kind of message. There are different kinds of
 // messages.
