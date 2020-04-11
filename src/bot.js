@@ -46,21 +46,21 @@ bot.onText(/\/help/, (msg) => {
       id: chatId,
     },
   } = msg;
-  const resp = 'Utiliza el comando /birthday y tu cumpleaños con el formato DD-MM. Te avisaré cuando sea tu cumpleaños ;) \n /birthdays para obtener todos los cumpleaños del chat';
+  const resp = 'Utiliza el comando /birthday y tu cumpleaños con el formato DD-MM. Te avisaré cuando sea tu cumpleaños ;)';
 
   bot.sendMessage(chatId, resp);
 });
 
-bot.onText(/\/birthdays/, (msg) => {
-  const {
-    chat: {
-      id: chatId,
-    },
-  } = msg;
-  const resp = getBirthdays();
+// bot.onText(/\/birthdays/, (msg) => {
+//   const {
+//     chat: {
+//       id: chatId,
+//     },
+//   } = msg;
+//   const resp = getBirthdays();
 
-  bot.sendMessage(chatId, resp);
-});
+//   bot.sendMessage(chatId, resp);
+// });
 
 // Listen for any kind of message. There are different kinds of
 // messages.
