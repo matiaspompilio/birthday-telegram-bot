@@ -1,6 +1,6 @@
 const moment = require('moment-timezone');
 const cron = require('node-cron');
-const { addBirthday, checkBirthdays } = require('./calendar');
+const { addBirthday, checkBirthdays, getBirthdays } = require('./calendar');
 const { bot } = require('../config/api');
 
 
@@ -46,10 +46,22 @@ bot.onText(/\/help/, (msg) => {
       id: chatId,
     },
   } = msg;
-  const resp = 'Utilizando el comando /birthday y tu cumpleaños con el formato DD-MM. Te avisaré cuando sea tu cumpleaños ;)';
+  const resp = 'Utilizando el comando /birthday y tu cumpleaños con el formato DD-MM. Te avisaré cuando sea tu cumpleaños ;) \n /birthdays para obtener todos los cumpleaños del grupo';
 
   bot.sendMessage(chatId, resp);
 });
+
+bot.onText(/\/birthdays/, (msg) => {
+  const {
+    chat: {
+      id: chatId,
+    },
+  } = msg;
+  const resp = getBirthdays();
+
+  bot.sendMessage(chatId, resp);
+});
+
 // Listen for any kind of message. There are different kinds of
 // messages.
 bot.on('polling_error', (err) => console.log(err));

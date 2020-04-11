@@ -17,6 +17,8 @@ const checkBirthdays = (func) => {
   });
 };
 
+const getBirthdays = (chatId) => JSON.parse(birthdays[chatId]);
+
 const addBirthday = (chatId, userId, userName, day) => {
   birthdays[chatId]
     ? birthdays[chatId][userId] = {
@@ -35,4 +37,5 @@ const addBirthday = (chatId, userId, userName, day) => {
 module.exports = {
   addBirthday,
   checkBirthdays,
+  getBirthdays,
 };
