@@ -1,4 +1,3 @@
-// Move the package imports to the top of the file
 const express = require('express');
 const bodyParser = require('body-parser');
 const bot = require('./src/bot');
