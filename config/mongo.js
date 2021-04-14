@@ -1,13 +1,16 @@
 const mongoose = require('mongoose');
+const { newChat } = require('../src/services/chat.js');
 
-const { MONGO_PASSWORD } = process.env;
-
-const connectionString = `mongodb+srv://mpompilio:${MONGO_PASSWORD}@cluster0.joyi7.mongodb.net/tb-bot?retryWrites=true&w=majority`;
+const connectionString = process.env.MONGO_DB_URI;
 
 // mongodb connection
-mongoose.connect(connectionString)
+mongoose.connect(connectionString, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useFindAndModify: false,
+  useCreateIndex: true,
+})
   .then(() => {
-    console.log('Database connected');
   })
   .catch((err) => {
     console.error(err);

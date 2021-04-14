@@ -1,11 +1,12 @@
 require('dotenv').config();
+require('./config/mongo');
 const express = require('express');
-const bodyParser = require('body-parser');
+const chatService = require('./src/services/chat');
 const bot = require('./src/bot');
 
 const app = express();
 
-app.use(bodyParser.json());
+app.use(express.json());
 
 app.listen(process.env.PORT);
 

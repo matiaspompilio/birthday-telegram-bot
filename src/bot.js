@@ -1,6 +1,7 @@
 const moment = require('moment-timezone');
 const cron = require('node-cron');
-const { addBirthday, checkBirthdays, getBirthdays } = require('./calendar');
+const { checkBirthdays, getBirthdays } = require('./calendar');
+const { addBirthday, newChat } = require('./services/chat');
 const { bot } = require('../config/api');
 
 
@@ -12,7 +13,23 @@ cron.schedule('00 00 * * *', () => {
   timezone: 'America/Argentina/Buenos_Aires',
 });
 
-// Matches "/birthday [whatever]"
+bot.onText(/\/start/, (msg) => {
+  const {
+    chat: {
+      id: chatId,
+    },
+  } = msg;
+  let resp;
+  newChat(chatId).then(() => {
+    resp = 'El chat ya está habilitado para comenzar a guardar cumpleaños.\n Utiliza el comando /help para más información.';
+  }).catch((err) => {
+    resp = 'Ha ocurrido un error al procesar el mensaje';
+    console.error(err);
+  });
+  bot.sendMessage(chatId, resp);
+});
+
+// Matches "/birthday ['DD-MM']"
 bot.onText(/\/birthday (.+)/, (msg, match) => {
   // 'msg' is the received Message from Telegram
   // 'match' is the result of executing the regexp above on the text content
@@ -28,7 +45,6 @@ bot.onText(/\/birthday (.+)/, (msg, match) => {
   } = msg;
 
   let resp;
-
   // using moment validation to parse the input
   if (moment(match[1], 'DD-MM').isValid()) {
     resp = 'Se guardó tu cumpleaños';
@@ -51,15 +67,18 @@ bot.onText(/\/help/, (msg) => {
   bot.sendMessage(chatId, resp);
 });
 
-bot.onText(/\/birthdays/, (msg) => {
+bot.onText(/\/birthdays/, async (msg) => {
   const {
     chat: {
       id: chatId,
     },
   } = msg;
-  const resp = getBirthdays(chatId);
-
-  bot.sendMessage(chatId, resp);
+  const users = await getUsers(chatId);
+  const birthdays = users.map(({ name, birthday }) => ({
+    name,
+    birthday,
+  }));
+  bot.sendMessage(chatId, birthdays);
 });
 
 // Listen for any kind of message. There are different kinds of

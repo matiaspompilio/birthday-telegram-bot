@@ -39,7 +39,6 @@ const addBirthday = (chatId, userId, userName, day) => {
         birthday: day,
       },
     };
-  console.log(birthdays);
 };
 
 module.exports = {
