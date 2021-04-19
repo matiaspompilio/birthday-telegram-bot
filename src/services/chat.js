@@ -7,7 +7,7 @@ const newChat = (chatId) => {
   return chat.save();
 };
 
-const addBirthday = (chatId, userId, userName, birthday) => {
+const addBirthday = async (chatId, userId, userName, birthday) => {
   const newUser = {
     userId,
     name: userName,
@@ -23,10 +23,10 @@ const addBirthday = (chatId, userId, userName, birthday) => {
     $push: {
       users: newUser,
     },
-  }).then((result) => {
+  }).then(async (result) => {
   // if the userId already exist, modify the existing one
     if (result.n === 0) {
-      Chat.updateOne(
+      await Chat.updateOne(
         { chatId, 'users.userId': userId },
         { $set: { 'users.$': newUser } },
       );
@@ -34,13 +34,19 @@ const addBirthday = (chatId, userId, userName, birthday) => {
   });
 };
 
-const getUsers = async (chatId) => {
-  const chat = await Chat.find({ chatId });
+const getChatUsers = async (chatId) => {
+  const chat = await Chat.findOne({ chatId });
   return chat.users;
+};
+
+const getChats = async () => {
+  const chats = await Chat.find();
+  return chats;
 };
 
 module.exports = {
   addBirthday,
   newChat,
-  getUsers,
+  getChatUsers,
+  getChats,
 };

@@ -1,7 +1,6 @@
 require('dotenv').config();
 require('./config/mongo');
 const express = require('express');
-const chatService = require('./src/services/chat');
 const bot = require('./src/bot');
 
 const app = express();

@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const { newChat } = require('../src/services/chat.js');
 
 const connectionString = process.env.MONGO_DB_URI;
 

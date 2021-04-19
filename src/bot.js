@@ -1,9 +1,21 @@
 const moment = require('moment-timezone');
 const cron = require('node-cron');
-const { checkBirthdays, getBirthdays } = require('./calendar');
-const { addBirthday, newChat } = require('./services/chat');
+const {
+  addBirthday, getChats, newChat, getChatUsers,
+} = require('./services/chat');
 const { bot } = require('../config/api');
 
+
+const checkBirthdays = async (func) => {
+  const chats = await getChats();
+  chats.map(({ chatId, users }) => {
+    users.map((user) => {
+      if ((moment().isSame(moment(user.birthday, 'DD-MM'), 'month')) && (moment().isSame(moment(user.birthday, 'DD-MM'), 'day'))) {
+        func(chatId, user.name);
+      }
+    });
+  });
+};
 
 // Send messages everyday at 00:00
 cron.schedule('00 00 * * *', () => {
@@ -22,15 +34,15 @@ bot.onText(/\/start/, (msg) => {
   let resp;
   newChat(chatId).then(() => {
     resp = 'El chat ya está habilitado para comenzar a guardar cumpleaños.\n Utiliza el comando /help para más información.';
+    bot.sendMessage(chatId, resp);
   }).catch((err) => {
     resp = 'Ha ocurrido un error al procesar el mensaje';
     console.error(err);
   });
-  bot.sendMessage(chatId, resp);
 });
 
 // Matches "/birthday ['DD-MM']"
-bot.onText(/\/birthday (.+)/, (msg, match) => {
+bot.onText(/\/birthday (.+)/, async (msg, match) => {
   // 'msg' is the received Message from Telegram
   // 'match' is the result of executing the regexp above on the text content
   // of the message
@@ -45,10 +57,16 @@ bot.onText(/\/birthday (.+)/, (msg, match) => {
   } = msg;
 
   let resp;
+  const birthday = moment(match[1], 'DD-MM');
   // using moment validation to parse the input
-  if (moment(match[1], 'DD-MM').isValid()) {
-    resp = 'Se guardó tu cumpleaños';
-    addBirthday(chatId, fromId, fromName, match[1]);
+  if (birthday.isValid()) {
+    try {
+      console.log(birthday.toString());
+      await addBirthday(chatId, fromId, fromName, birthday.toDate());
+      resp = 'Se guardó tu cumpleaños';
+    } catch (e) {
+      resp = 'Hubo un error al guardar tu cumpleaños';
+    }
   } else {
     resp = 'Formato requerido DD-MM';
   }
@@ -73,12 +91,11 @@ bot.onText(/\/birthdays/, async (msg) => {
       id: chatId,
     },
   } = msg;
-  const users = await getUsers(chatId);
-  const birthdays = users.map(({ name, birthday }) => ({
-    name,
-    birthday,
-  }));
-  bot.sendMessage(chatId, birthdays);
+  const users = await getChatUsers(chatId);
+  bot.sendMessage(chatId, 'La lista de cumpleaños es: ');
+  users.map(({ name, birthday }) => {
+    bot.sendMessage(chatId, `${name} - ${moment(birthday).format('DD-MM')}`);
+  });
 });
 
 // Listen for any kind of message. There are different kinds of
