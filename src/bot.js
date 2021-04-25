@@ -5,20 +5,21 @@ const {
 const { bot } = require('./config/api');
 
 
-bot.onText(/\/start/, (msg) => {
+bot.onText(/\/start/, async (msg) => {
   const {
     chat: {
       id: chatId,
     },
   } = msg;
   let resp;
-  newChat(chatId).then(() => {
+  try {
+    await newChat(chatId);
     resp = 'El chat ya está habilitado para comenzar a guardar cumpleaños.\n Utiliza el comando /help para más información.';
-    bot.sendMessage(chatId, resp);
-  }).catch((err) => {
+  } catch (err) {
     resp = 'Ha ocurrido un error al procesar el mensaje';
     console.error(err);
-  });
+  }
+  bot.sendMessage(chatId, resp);
 });
 
 // Matches "/birthday ['DD-MM']"
@@ -41,7 +42,6 @@ bot.onText(/\/birthday (.+)/, async (msg, match) => {
   // using moment validation to parse the input
   if (birthday.isValid()) {
     try {
-      console.log(birthday.toString());
       await addBirthday(chatId, fromId, fromName, birthday.toDate());
       resp = 'Se guardó tu fecha de cumpleaños';
     } catch (e) {
@@ -72,10 +72,14 @@ bot.onText(/\/birthdays/, async (msg) => {
     },
   } = msg;
   const users = await getChatUsers(chatId);
-  await bot.sendMessage(chatId, 'La lista de cumpleaños es: ');
-  Promise.all(users.map(async ({ name, birthday }) => {
-    await bot.sendMessage(chatId, `${name} - ${moment(birthday).format('DD/MM')}`);
-  }));
+  if(users.length > 0) {
+    await bot.sendMessage(chatId, 'La lista de cumpleaños es: ');
+    Promise.all(users.map(async ({ name, birthday }) => {
+      bot.sendMessage(chatId, `${name} - ${moment(birthday).format('DD/MM')}`);
+    }));
+  } else {
+    bot.sendMessage(chatId, 'No existen cumpleaños');
+  }
 });
 
 // Listen for any kind of message. There are different kinds of

@@ -15,11 +15,6 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 14.x
-      - name: create env file
-        run: |
-          touch .env
-          echo TOKEN=${{ secrets.TOKEN }} >> .env
-          echo MONGO_DB_URI=${{ secrets.MONGO_DB_URI }} >> .env
       - run: npm install
       - name: run script
         run: npm run check-birthdays
