@@ -1,29 +1,9 @@
 const moment = require('moment-timezone');
-const cron = require('node-cron');
 const {
-  addBirthday, getChats, newChat, getChatUsers,
+  addBirthday, newChat, getChatUsers,
 } = require('./services/chat');
 const { bot } = require('./config/api');
 
-
-const checkBirthdays = async (func) => {
-  const chats = await getChats();
-  chats.map(({ chatId, users }) => {
-    users.map((user) => {
-      if ((moment().isSame(moment(user.birthday, 'DD-MM'), 'month')) && (moment().isSame(moment(user.birthday, 'DD-MM'), 'day'))) {
-        func(chatId, user.name);
-      }
-    });
-  });
-};
-
-// Send messages everyday at 00:00
-cron.schedule('00 00 * * *', () => {
-  checkBirthdays((chatId, name) => bot.sendMessage(chatId, `Es el cumpleaños de ${name}!`));
-}, {
-  scheduled: true,
-  timezone: 'America/Argentina/Buenos_Aires',
-});
 
 bot.onText(/\/start/, (msg) => {
   const {
@@ -63,7 +43,7 @@ bot.onText(/\/birthday (.+)/, async (msg, match) => {
     try {
       console.log(birthday.toString());
       await addBirthday(chatId, fromId, fromName, birthday.toDate());
-      resp = 'Se guardó tu fecha cumpleaños';
+      resp = 'Se guardó tu fecha de cumpleaños';
     } catch (e) {
       resp = 'Error al intentar guardar la fecha de cumpleaños';
     }
