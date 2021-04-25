@@ -6,7 +6,7 @@ on:
     - cron: 00 00 * * *
 
 jobs:
-  downloadStatus:
+  reminder:
     runs-on: ubuntu-latest
 
     steps:
