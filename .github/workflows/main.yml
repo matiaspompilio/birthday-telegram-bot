@@ -1,8 +1,9 @@
 name: Check all birthdays
 
 on:
+  workflow_dispatch:
   schedule:
-    - cron: 33 13 * * *
+    - cron: 00 00 * * *
 
 jobs:
   reminder:
