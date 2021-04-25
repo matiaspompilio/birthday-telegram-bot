@@ -1,5 +1,5 @@
 require('dotenv').config();
-require('../config/mongo');
+const mongoose = require('../config/mongo');
 const moment = require('moment-timezone');
 const core = require('@actions/core');
 const github = require('@actions/github');
@@ -26,3 +26,5 @@ try {
 } catch (error) {
   core.setFailed(error.message);
 }
+
+mongoose.connection.close()
