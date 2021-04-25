@@ -1,10 +1,8 @@
 const TelegramBot = require('node-telegram-bot-api');
-
-const { TOKEN } = process.env;
-const { HEROKU_URL } = process.env;
+const { TOKEN, HEROKU_URL, NODE_ENV } = require('./constants');
 
 let bot;
-if (process.env.NODE_ENV === 'production') {
+if (NODE_ENV === 'production') {
   bot = new TelegramBot(TOKEN);
   bot.setWebHook(HEROKU_URL + TOKEN);
 } else {

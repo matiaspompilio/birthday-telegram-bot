@@ -1,5 +1,5 @@
 require('dotenv').config();
-require('./config/mongo');
+require('./src/config/mongo');
 const express = require('express');
 const bot = require('./src/bot');
 
