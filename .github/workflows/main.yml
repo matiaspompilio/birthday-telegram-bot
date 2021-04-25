@@ -2,7 +2,7 @@ name: Check all birthdays
 
 on:
   schedule:
-    - cron: 32 13 * * *
+    - cron: 33 13 * * *
 
 jobs:
   reminder:
