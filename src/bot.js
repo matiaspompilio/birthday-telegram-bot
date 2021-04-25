@@ -72,7 +72,7 @@ bot.onText(/\/birthdays/, async (msg) => {
     },
   } = msg;
   const users = await getChatUsers(chatId);
-  if(users.length > 0) {
+  if(users && users.length > 0) {
     await bot.sendMessage(chatId, 'La lista de cumpleaños es: ');
     Promise.all(users.map(async ({ name, birthday }) => {
       bot.sendMessage(chatId, `${name} - ${moment(birthday).format('DD/MM')}`);
