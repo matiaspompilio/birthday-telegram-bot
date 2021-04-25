@@ -27,5 +27,5 @@ const checkBirthdays = async (func) => {
   } catch (error) {
     core.setFailed(error.message);
   }
-  mongoose.connection.close()
+  await mongoose.connection.close()
 })()
