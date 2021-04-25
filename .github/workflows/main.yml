@@ -6,19 +6,23 @@ on:
     - cron: 00 00 * * *
 
 jobs:
-  reminder:
+  downloadStatus:
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v2
+      - name: Use Node.js version 14.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.x
       - name: create env file
         run: |
           touch .env
           echo TOKEN=${{ secrets.TOKEN }} >> .env
           echo MONGO_DB_URI=${{ secrets.MONGO_DB_URI }} >> .env
-      - name: Use Node.js version 14.x
-        uses: actions/setup-node@v1
-        with:
-          node-version: 14.x
       - run: npm install
-      - run: npm run check-birthdays
+      - name: run script
+        run: npm run check-birthdays
+        env:
+          TOKEN: ${{ secrets.TOKEN }}
+          MONGO_DB_URI: ${{ secrets.MONGO_DB_URI }}
