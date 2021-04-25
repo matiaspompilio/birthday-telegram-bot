@@ -1,0 +1,16 @@
+name: 'Close stale issues'
+on:
+  schedule:
+    - cron: '0 0 * * *'
+
+jobs:
+  reminder_job:
+    runs-on: ubuntu-latest
+    name: A job to notify birthdays
+    steps:
+      - name: Notify action step
+        id: notify
+        uses: actions/birthday-telegram-bot@v1.1
+      # Use the output from the `hello` step
+      - name: Get the output time
+        run: echo "The time was ${{ steps.notify.outputs.time }}"
