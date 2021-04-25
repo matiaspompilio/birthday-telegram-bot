@@ -1,6 +1,7 @@
 {
   "scripts": {
     "start": "node index",
+    "check-birthdays": "node src/scripts/reminder.js",
     "lint": "eslint '**/*.js'",
     "lint:fix": "yarn lint --fix"
   },

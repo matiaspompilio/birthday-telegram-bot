@@ -1,8 +1,0 @@
-name: 'reminder'
-description: 'Check and notify birthdays'
-outputs:
-  time: # id of output
-    description: 'The time when the notify was sent'
-runs:
-  using: 'node12'
-  main: 'reminder.js'

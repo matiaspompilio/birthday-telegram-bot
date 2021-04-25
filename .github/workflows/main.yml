@@ -1,16 +1,22 @@
-name: 'Close stale issues'
+name: Check all birthdays
+
 on:
+  workflow_dispatch:
   schedule:
-    - cron: '26 01 * * *'
+    - cron: 39 12 * * *
 
 jobs:
-  reminder_job:
+  downloadStatus:
     runs-on: ubuntu-latest
-    name: A job to notify birthdays
+
     steps:
-      - name: Notify action step
-        id: notify
-        uses: actions/birthday-telegram-bot@v1.1
-      # Use the output from the `hello` step
-      - name: Get the output time
-        run: echo "The time was ${{ steps.notify.outputs.time }}"
+      - uses: actions/checkout@v2
+      - name: Use Node.js version 14.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.x
+        env:
+          TOKEN: ${{ secrets.TOKEN }}
+          MONGO_DB_URI: ${{ secrets.MONGO_DB_URI }}
+      - run: npm install
+      - run: npm run check-birthdays

@@ -1,3 +1,4 @@
+require('dotenv').config();
 require('../config/mongo');
 const moment = require('moment-timezone');
 const core = require('@actions/core');
@@ -18,8 +19,6 @@ const checkBirthdays = async (func) => {
 
 try {
   checkBirthdays((chatId, name) => bot.sendMessage(chatId, `Es el cumpleaños de ${name}!`));
-  const time = (new Date()).toTimeString();
-  core.setOutput('time', time);
 
   // Get the JSON webhook payload for the event that triggered the workflow
   const payload = JSON.stringify(github.context.payload, undefined, 2);
