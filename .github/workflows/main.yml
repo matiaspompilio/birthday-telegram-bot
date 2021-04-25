@@ -1,7 +1,7 @@
 name: 'Close stale issues'
 on:
   schedule:
-    - cron: '16 1 * * *'
+    - cron: '23 01 * * *'
 
 jobs:
   reminder_job:
