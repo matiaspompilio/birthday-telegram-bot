@@ -6,7 +6,7 @@ on:
     - cron: 39 12 * * *
 
 jobs:
-  downloadStatus:
+  reminder:
     runs-on: ubuntu-latest
 
     steps:
@@ -15,8 +15,10 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 14.x
-        env:
-          TOKEN: ${{ secrets.TOKEN }}
-          MONGO_DB_URI: ${{ secrets.MONGO_DB_URI }}
+      - name: create env file
+        run: |
+          touch .env
+          echo TOKEN=${{ secrets.TOKEN }} >> .env
+          echo MONGO_DB_URI=${{ secrets.MONGO_DB_URI }} >> .env
       - run: npm install
       - run: npm run check-birthdays
