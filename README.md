@@ -1,4 +1,6 @@
 # birthday-telegram-bot
+[![Check all birthdays](https://github.com/matiaspompilio/birthday-telegram-bot/actions/workflows/main.yml/badge.svg)](https://github.com/matiaspompilio/birthday-telegram-bot/actions/workflows/main.yml)
+
 Simple bot to remember birthdays in a Telegram group.
 
 Commands: 
